@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { RadialBarChart, RadialBar, Legend, Tooltip } from 'recharts';
 
 function FetchData() {
+  const [avaliableWidth, setAvaliableWidth] = useState();
+  const [avaliableHeight, setAvaliableHeight] = useState();
+
   const [data, setData] = useState();
   const [temperature, setTemperature] = useState();
   const [humidity, setHumidity] = useState();
@@ -41,17 +44,30 @@ function FetchData() {
     fetchData();
   });
 
+  (function () {
+    window.onresize = displayWindowSize;
+    window.onload = displayWindowSize;
+
+    function displayWindowSize() {
+      let myWidth = window.innerWidth;
+      let myHeight = window.innerHeight;
+      // your size calculation code here
+      setAvaliableWidth(parseInt(myWidth));
+      setAvaliableHeight(parseInt(myHeight));
+      console.log(avaliableWidth, avaliableHeight);
+    };
+  })();
+
   return (
-    <div className='flex flex-col items-center content-center justify-center rounded'>
+    <div className='flex flex-row items-center content-center justify-center'>
       <RadialBarChart
-        width={window.screen.availWidth - (window.outerWidth - window.innerWidth)}
-        height={350}
+        width={avaliableWidth < 400 ? 250 : 800}
+        height={450}
         innerRadius="10%"
-        outerRadius="80%"
+        outerRadius="100%"
         data={data}
         startAngle={180}
         endAngle={0}
-        className="flex-row"
       >
         <RadialBar minAngle={15} label={{ fill: '#666', position: 'insideStart' }} background clockWise={true} dataKey='uv' />
         <Legend iconSize={10} width={120} height={140} layout='vertical' verticalAlign='middle' align="bottom" />
