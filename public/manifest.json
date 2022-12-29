@@ -2,17 +2,17 @@
   "short_name": "Bitki Takip",
   "name": "Bitki Takip Uygulaması",
   "icons": [{
-      "src": "../src/assets/plant.png",
+      "src": "https://i.hizliresim.com/qo5e98b.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "../src/assets/plant.png",
+      "src": "https://i.hizliresim.com/qo5e98b.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "../src/assets/plant.png",
+      "src": "https://i.hizliresim.com/qo5e98b.png",
       "type": "image/png",
       "sizes": "512x512"
     }
