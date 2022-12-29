@@ -1,8 +1,8 @@
 {
-  "short_name": "Tracker App",
-  "name": "Create React App Sample",
+  "short_name": "Bitki Takip",
+  "name": "Bitki Takip Uygulaması",
   "icons": [{
-      "src": "favicon.ico",
+      "src": "../src/assets/plant.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
