@@ -3,18 +3,16 @@ import { useState, useEffect } from 'react';
 import { VictoryChart, VictoryBar, VictoryTheme } from 'victory';
 
 function FetchData() {
-  const [avaliableWidth, setAvaliableWidth] = useState();
-  const [avaliableHeight, setAvaliableHeight] = useState();
-
-  const [data, setData] = useState();
   const [temperature, setTemperature] = useState([]);
   const [humidity, setHumidity] = useState([]);
   const [lux, setLux] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      const fetched = await fetch("https://api.thingspeak.com/channels/1977361/feeds.json?results=10")
+      const fetched = await fetch("https://api.thingspeak.com/channels/1977361/feeds.json?results=6")
         .then(response => response.json());
+      console.log("fetched", fetched);
+
       const fetchedTemperatureData = [];
       for (let i = 0; i < 6; i++) {
         fetchedTemperatureData.push(parseFloat(fetched.feeds[i].field1));
@@ -36,7 +34,7 @@ function FetchData() {
       ]);
       const fetchedHumidityData = [];
       for (let i = 0; i < 6; i++) {
-        fetchedHumidityData.push(parseFloat(fetched.feeds[i].field2));
+        fetchedHumidityData.push(fetched.feeds[i].field2);
       }
       const fetchedHumidityTime = [];
       for (let i = 0; i < 6; i++) {
@@ -65,80 +63,112 @@ function FetchData() {
         fetchedLuxTime.push(time);
       }
       setLux([
-        { date: fetchedLuxTime[0], humidity: fetchedLuxData[0] },
-        { date: fetchedLuxTime[1], humidity: fetchedLuxData[1] },
-        { date: fetchedLuxTime[2], humidity: fetchedLuxData[2] },
-        { date: fetchedLuxTime[3], humidity: fetchedLuxData[3] },
-        { date: fetchedLuxTime[4], humidity: fetchedLuxData[4] },
-        { date: fetchedLuxTime[5], humidity: fetchedLuxData[5] }
+        { date: fetchedLuxTime[0], lux: fetchedLuxData[0] },
+        { date: fetchedLuxTime[1], lux: fetchedLuxData[1] },
+        { date: fetchedLuxTime[2], lux: fetchedLuxData[2] },
+        { date: fetchedLuxTime[3], lux: fetchedLuxData[3] },
+        { date: fetchedLuxTime[4], lux: fetchedLuxData[4] },
+        { date: fetchedLuxTime[5], lux: fetchedLuxData[5] }
       ]);
-
-
-      // setHumidity([...humidity, parseFloat(fetched.field2)]);
-      // setLux([...lux, parseFloat(fetched.field3)]);
-      // console.log("temperature", temperature);
-      // console.log("humidity", humidity);
-      // console.log("lux", lux);
-      // console.log("fetchedTemperatureData", fetchedTemperatureData);
-      // console.log("fetchedTemperatureTime", fetchedTemperatureTime);
     }
     fetchData();
   }, []);
 
-  (function () {
-    window.onresize = displayWindowSize;
-    window.onload = displayWindowSize;
+  const IsTemperatureIdeal = () => {
+    let ortSicaklik = 0;
+    temperature.forEach(element => {
+      ortSicaklik += parseFloat(element.temperature);
+    });
+    ortSicaklik = ortSicaklik / 6;
+    if (ortSicaklik >= 23 && ortSicaklik <= 28) {
+      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam sıcaklık değeri ideal seviyede.</p>;
+    } else if (ortSicaklik < 23) {
+      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam sıcaklık değeri ideal seviyenin altında.</p>;
+    } else if (ortSicaklik > 28) {
+      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam sıcaklık değeri ideal seviyenin üstünde.</p>;
+    }
+  }
 
-    function displayWindowSize() {
-      let myWidth = window.innerWidth;
-      let myHeight = window.innerHeight;
-      // your size calculation code here
-      setAvaliableWidth(parseInt(myWidth));
-      setAvaliableHeight(parseInt(myHeight));
-      console.log(avaliableWidth, avaliableHeight);
-    };
-  })();
+  const IsHumidityIdeal = () => {
+    let ortHumidity = 0;
+    humidity.forEach(element => {
+      ortHumidity += parseFloat(element.humidity);
+    });
+    ortHumidity = ortHumidity / 6;
+    if (ortHumidity >= 35 && ortHumidity <= 70) {
+      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam nem değeri ideal seviyede.</p>;
+    } else if (ortHumidity < 35) {
+      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam nem değeri ideal seviyenin altında.</p>;
+    } else if (ortHumidity > 70) {
+      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam nem değeri ideal seviyenin üstünde.</p>;
+    }
+  }
+
+
+  const IsLuxIdeal = () => {
+    let ortLux = 0;
+    lux.forEach(element => {
+      ortLux += parseFloat(element.lux);
+    });
+    ortLux = ortLux / 6;
+    if (ortLux >= 4200 && ortLux <= 4200) {
+      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam ışık değeri ideal seviyede.</p>;
+    } else if (ortLux < 35) {
+      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam ışık değeri ideal seviyenin altında.</p>;
+    } else if (ortLux > 60) {
+      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam ışık değeri ideal seviyenin üstünde.</p>;
+    }
+  }
 
   return (
-    <div className='flex flex-col items-center content-center justify-center'>
-      <h3>Temperature</h3>
+    <div className='flex flex-col items-center content-center justify-center my-5'>
+      {IsTemperatureIdeal()}
       <VictoryChart
-        domainPadding={5}
-        theme={VictoryTheme.material}
+        domainPadding={20}
+        theme={VictoryTheme.grayscale}
+        animate={{ duration: 2000 }}
       >
         <VictoryBar
+          style={{ data: { fill: "#F87315" } }}
           data={temperature}
           x="date"
           y="temperature"
         />
       </VictoryChart>
-      <h3>Humidity</h3>
+      <h3 className='text-lg text-orange-500 mb-20'>Temperature</h3>
+
+      {IsHumidityIdeal()}
       <VictoryChart
         domainPadding={20}
-        theme={VictoryTheme.material}
+        theme={VictoryTheme.grayscale}
+        animate={{ duration: 2000 }}
       >
         <VictoryBar
+          style={{ data: { fill: "#5FA5F9" } }}
           data={humidity}
           x="date"
           y="humidity"
         />
       </VictoryChart>
-      <h3>Lux</h3>
+      <h3 className='text-lg text-blue-400 mb-20'>Humidity</h3>
+
       <VictoryChart
         domainPadding={20}
-        theme={VictoryTheme.material}
+        theme={VictoryTheme.grayscale}
+        animate={{ duration: 2000 }}
       >
         <VictoryBar
+          style={{ data: { fill: "#EAB305" } }}
           data={lux}
           x="date"
           y="lux"
         />
       </VictoryChart>
+      <h3 className='text-lg text-yellow-500'>Lux</h3>
+
     </div>
   )
 };
-
-
 
 
 export default FetchData
