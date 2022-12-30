@@ -274,9 +274,9 @@ function FetchData() {
       <h3 className='text-lg text-yellow-500'>Işık</h3>
 
       <a className="text-orange-900 text-2xl font-bold underline my-5" href="#section">Günlük Bitki Durumu</a>
-      <div className=''>{IsTemperatureIdeal(1920, gunlukTemperature)}</div>
-      <div>{IsHumidityIdeal(1920, gunlukHumidity)}</div>
-      <div>{IsLuxIdeal(1920, gunlukLux)}</div>
+      <div className='my-4'>{IsTemperatureIdeal(1920, gunlukTemperature)}</div>
+      <div className='my-4'>{IsHumidityIdeal(1920, gunlukHumidity)}</div>
+      <div className='my-4'>{IsLuxIdeal(1920, gunlukLux)}</div>
     </div>
   )
 };
