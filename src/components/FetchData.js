@@ -135,7 +135,7 @@ function FetchData() {
           y="temperature"
         />
       </VictoryChart>
-      <h3 className='text-lg text-orange-500 mb-20'>Temperature</h3>
+      <h3 className='text-lg text-orange-500 mb-20'>Sıcaklık</h3>
 
       {IsHumidityIdeal()}
       <VictoryChart
@@ -150,7 +150,7 @@ function FetchData() {
           y="humidity"
         />
       </VictoryChart>
-      <h3 className='text-lg text-blue-400 mb-20'>Humidity</h3>
+      <h3 className='text-lg text-blue-400 mb-20'>Nem</h3>
 
       <VictoryChart
         domainPadding={20}
@@ -164,7 +164,7 @@ function FetchData() {
           y="lux"
         />
       </VictoryChart>
-      <h3 className='text-lg text-yellow-500'>Lux</h3>
+      <h3 className='text-lg text-yellow-500'>Işık</h3>
 
     </div>
   )
