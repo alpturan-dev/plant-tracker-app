@@ -13,7 +13,6 @@ function App() {
         <hr className=" my-20 h-px bg-gray-200 border-0"></hr>
       </div>
       <div className="w-4/5 text-center">
-        <a className="text-orange-900 text-2xl font-bold underline" href="#section">Bitki Durumu</a>
         <FetchData />
       </div>
     </div>

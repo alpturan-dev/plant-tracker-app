@@ -6,123 +6,229 @@ function FetchData() {
   const [temperature, setTemperature] = useState([]);
   const [humidity, setHumidity] = useState([]);
   const [lux, setLux] = useState([]);
+  const [gunlukTemperature, setGunlukTemperature] = useState([]);
+  const [gunlukHumidity, setGunlukHumidity] = useState([]);
+  const [gunlukLux, setGunlukLux] = useState([]);
+
+  //Gunluk veriler
+  async function fetchGunlukData() {
+    const fetched = await fetch("https://api.thingspeak.com/channels/1977361/feeds.json?results=1920")
+      .then(response => response.json());
+    console.log("fetched", fetched);
+
+    const fetchedTemperatureData = [];
+    for (let i = 0; i < 1920; i++) {
+      fetchedTemperatureData.push(parseFloat(fetched.feeds[i].field1));
+    }
+    const fetchedTemperatureTime = [];
+    for (let i = 0; i < 1920; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedTemperatureTime.push(time);
+    }
+    setGunlukTemperature(() => {
+      let tempArray = [];
+      for (let i = 0; i < 1920; i++) {
+        tempArray.push({ date: fetchedTemperatureTime[i], temperature: fetchedTemperatureData[i] });
+      }
+      return tempArray;
+    });
+
+    const fetchedHumidityData = [];
+    for (let i = 0; i < 1920; i++) {
+      fetchedHumidityData.push(fetched.feeds[i].field2);
+    }
+    const fetchedHumidityTime = [];
+    for (let i = 0; i < 1920; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedHumidityTime.push(time);
+    }
+    setGunlukHumidity(() => {
+      let tempArray = [];
+      for (let i = 0; i < 6; i++) {
+        tempArray.push({ date: fetchedHumidityTime[i], humidity: fetchedHumidityData[i] });
+      }
+      return tempArray;
+    });
+
+    const fetchedLuxData = [];
+    for (let i = 0; i < 1920; i++) {
+      fetchedLuxData.push(parseFloat(fetched.feeds[i].field3));
+    }
+    const fetchedLuxTime = [];
+    for (let i = 0; i < 1920; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedLuxTime.push(time);
+    }
+    setGunlukLux(() => {
+      let tempArray = [];
+      for (let i = 0; i < 6; i++) {
+        tempArray.push({ date: fetchedLuxTime[i], lux: fetchedLuxData[i] });
+      }
+      return tempArray;
+    });
+  }
+
+  //Dakikalik veriler
+  async function fetchData() {
+    const fetched = await fetch("https://api.thingspeak.com/channels/1977361/feeds.json?results=4")
+      .then(response => response.json());
+    console.log("fetched", fetched);
+
+    const fetchedTemperatureData = [];
+    for (let i = 0; i < 4; i++) {
+      fetchedTemperatureData.push(parseFloat(fetched.feeds[i].field1));
+    }
+    const fetchedTemperatureTime = [];
+    for (let i = 0; i < 4; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedTemperatureTime.push(time);
+    }
+    setTemperature(() => {
+      let tempArray = [];
+      for (let i = 0; i < 4; i++) {
+        tempArray.push({ date: fetchedTemperatureTime[i], temperature: fetchedTemperatureData[i] });
+      }
+      return tempArray;
+    });
+
+    const fetchedHumidityData = [];
+    for (let i = 0; i < 4; i++) {
+      fetchedHumidityData.push(fetched.feeds[i].field2);
+    }
+    const fetchedHumidityTime = [];
+    for (let i = 0; i < 4; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedHumidityTime.push(time);
+    }
+    setHumidity(() => {
+      let tempArray = [];
+      for (let i = 0; i < 4; i++) {
+        tempArray.push({ date: fetchedHumidityTime[i], humidity: fetchedHumidityData[i] });
+      }
+      return tempArray;
+    });
+
+    const fetchedLuxData = [];
+    for (let i = 0; i < 4; i++) {
+      fetchedLuxData.push(parseFloat(fetched.feeds[i].field3));
+    }
+    const fetchedLuxTime = [];
+    for (let i = 0; i < 4; i++) {
+      let time = fetched.feeds[i].created_at;
+      time = time.substring(11, 19);
+      console.log(time);
+      fetchedLuxTime.push(time);
+    }
+    setLux(() => {
+      let tempArray = [];
+      for (let i = 0; i < 4; i++) {
+        tempArray.push({ date: fetchedLuxTime[i], lux: fetchedLuxData[i] });
+      }
+      return tempArray;
+    });
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      const fetched = await fetch("https://api.thingspeak.com/channels/1977361/feeds.json?results=6")
-        .then(response => response.json());
-      console.log("fetched", fetched);
-
-      const fetchedTemperatureData = [];
-      for (let i = 0; i < 6; i++) {
-        fetchedTemperatureData.push(parseFloat(fetched.feeds[i].field1));
-      }
-      const fetchedTemperatureTime = [];
-      for (let i = 0; i < 6; i++) {
-        let time = fetched.feeds[i].created_at;
-        time = time.substring(11, 19);
-        console.log(time);
-        fetchedTemperatureTime.push(time);
-      }
-      setTemperature([
-        { date: fetchedTemperatureTime[0], temperature: fetchedTemperatureData[0] },
-        { date: fetchedTemperatureTime[1], temperature: fetchedTemperatureData[1] },
-        { date: fetchedTemperatureTime[2], temperature: fetchedTemperatureData[2] },
-        { date: fetchedTemperatureTime[3], temperature: fetchedTemperatureData[3] },
-        { date: fetchedTemperatureTime[4], temperature: fetchedTemperatureData[4] },
-        { date: fetchedTemperatureTime[5], temperature: fetchedTemperatureData[5] }
-      ]);
-      const fetchedHumidityData = [];
-      for (let i = 0; i < 6; i++) {
-        fetchedHumidityData.push(fetched.feeds[i].field2);
-      }
-      const fetchedHumidityTime = [];
-      for (let i = 0; i < 6; i++) {
-        let time = fetched.feeds[i].created_at;
-        time = time.substring(11, 19);
-        console.log(time);
-        fetchedHumidityTime.push(time);
-      }
-      setHumidity([
-        { date: fetchedHumidityTime[0], humidity: fetchedHumidityData[0] },
-        { date: fetchedHumidityTime[1], humidity: fetchedHumidityData[1] },
-        { date: fetchedHumidityTime[2], humidity: fetchedHumidityData[2] },
-        { date: fetchedHumidityTime[3], humidity: fetchedHumidityData[3] },
-        { date: fetchedHumidityTime[4], humidity: fetchedHumidityData[4] },
-        { date: fetchedHumidityTime[5], humidity: fetchedHumidityData[5] }
-      ]);
-      const fetchedLuxData = [];
-      for (let i = 0; i < 6; i++) {
-        fetchedLuxData.push(parseFloat(fetched.feeds[i].field3));
-      }
-      const fetchedLuxTime = [];
-      for (let i = 0; i < 6; i++) {
-        let time = fetched.feeds[i].created_at;
-        time = time.substring(11, 19);
-        console.log(time);
-        fetchedLuxTime.push(time);
-      }
-      setLux([
-        { date: fetchedLuxTime[0], lux: fetchedLuxData[0] },
-        { date: fetchedLuxTime[1], lux: fetchedLuxData[1] },
-        { date: fetchedLuxTime[2], lux: fetchedLuxData[2] },
-        { date: fetchedLuxTime[3], lux: fetchedLuxData[3] },
-        { date: fetchedLuxTime[4], lux: fetchedLuxData[4] },
-        { date: fetchedLuxTime[5], lux: fetchedLuxData[5] }
-      ]);
-    }
     fetchData();
+    fetchGunlukData();
   }, []);
 
-  const IsTemperatureIdeal = () => {
+  const IsTemperatureIdeal = (veriSayisi, item) => {
     let ortSicaklik = 0;
-    temperature.forEach(element => {
+    item.forEach(element => {
       ortSicaklik += parseFloat(element.temperature);
     });
-    ortSicaklik = ortSicaklik / 6;
+    ortSicaklik = ortSicaklik / veriSayisi;
     if (ortSicaklik >= 23 && ortSicaklik <= 28) {
-      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam sıcaklık değeri ideal seviyede.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>
+        <span className="pl-4 color-white material-symbols-outlined">
+          done
+        </span>
+        Ortam sıcaklık değeri ideal seviyede.
+      </p>;
     } else if (ortSicaklik < 23) {
-      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam sıcaklık değeri ideal seviyenin altında.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl  shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>
+        Ortam sıcaklık değeri ideal seviyenin altında.</p>;
     } else if (ortSicaklik > 28) {
-      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam sıcaklık değeri ideal seviyenin üstünde.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>
+        Ortam sıcaklık değeri ideal seviyenin üstünde.</p>;
     }
   }
 
-  const IsHumidityIdeal = () => {
+  const IsHumidityIdeal = (veriSayisi, item) => {
     let ortHumidity = 0;
-    humidity.forEach(element => {
+    item.forEach(element => {
       ortHumidity += parseFloat(element.humidity);
     });
-    ortHumidity = ortHumidity / 6;
+    ortHumidity = ortHumidity / veriSayisi;
     if (ortHumidity >= 35 && ortHumidity <= 70) {
-      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam nem değeri ideal seviyede.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>
+        <span className="pl-4 material-symbols-outlined color-white">
+          done
+        </span>
+        Ortam nem değeri ideal seviyede.</p>;
     } else if (ortHumidity < 35) {
-      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam nem değeri ideal seviyenin altında.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>
+        Ortam nem değeri ideal seviyenin altında.</p>;
     } else if (ortHumidity > 70) {
-      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam nem değeri ideal seviyenin üstünde.</p>;
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>
+        Ortam nem değeri ideal seviyenin üstünde.</p>;
     }
   }
 
 
-  const IsLuxIdeal = () => {
+  const IsLuxIdeal = (veriSayisi, item) => {
     let ortLux = 0;
-    lux.forEach(element => {
+    item.forEach(element => {
       ortLux += parseFloat(element.lux);
     });
-    ortLux = ortLux / 6;
-    if (ortLux >= 4200 && ortLux <= 4200) {
-      return <p className='text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>Ortam ışık değeri ideal seviyede.</p>;
-    } else if (ortLux < 35) {
-      return <p className='text-center shadow-xl shadow-blue-300 text-xl rounded text-orangebg bg-blue-700'>Ortam ışık değeri ideal seviyenin altında.</p>;
-    } else if (ortLux > 60) {
-      return <p className='text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>Ortam ışık değeri ideal seviyenin üstünde.</p>;
+    ortLux = ortLux / veriSayisi;
+    if (ortLux >= 100 && ortLux <= 250) {
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-green-100 text-xl rounded text-orangebg bg-green-600'>
+        <span className="pl-4 material-symbols-outlined color-white">
+          done
+        </span>
+        Ortam ışık değeri ideal seviyede.</p>;
+    } else if (ortLux < 100) {
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>
+        Ortam ışık değeri ideal seviyenin altında.</p>;
+    } else if (ortLux > 250) {
+      return <p className='p-3 flex items-center justify-center text-center shadow-xl shadow-red-300 text-xl rounded text-orangebg bg-red-600'>
+        <span class="pl-4 color-white material-symbols-outlined">
+          warning
+        </span>Ortam ışık değeri ideal seviyenin üstünde.</p>;
     }
   }
 
   return (
     <div className='flex flex-col items-center content-center justify-center my-5'>
-      {IsTemperatureIdeal()}
+      <a className="text-orange-900 text-2xl font-bold underline my-4" href="#section">Bitki Durumu</a>
+      {IsTemperatureIdeal(4, temperature)}
       <VictoryChart
         domainPadding={20}
         theme={VictoryTheme.grayscale}
@@ -137,7 +243,7 @@ function FetchData() {
       </VictoryChart>
       <h3 className='text-lg text-orange-500 mb-20'>Sıcaklık</h3>
 
-      {IsHumidityIdeal()}
+      {IsHumidityIdeal(4, humidity)}
       <VictoryChart
         domainPadding={20}
         theme={VictoryTheme.grayscale}
@@ -152,6 +258,7 @@ function FetchData() {
       </VictoryChart>
       <h3 className='text-lg text-blue-400 mb-20'>Nem</h3>
 
+      {IsLuxIdeal(4, lux)}
       <VictoryChart
         domainPadding={20}
         theme={VictoryTheme.grayscale}
@@ -166,6 +273,10 @@ function FetchData() {
       </VictoryChart>
       <h3 className='text-lg text-yellow-500'>Işık</h3>
 
+      <a className="text-orange-900 text-2xl font-bold underline my-5" href="#section">Günlük Bitki Durumu</a>
+      <div className=''>{IsTemperatureIdeal(1920, gunlukTemperature)}</div>
+      <div>{IsHumidityIdeal(1920, gunlukHumidity)}</div>
+      <div>{IsLuxIdeal(1920, gunlukLux)}</div>
     </div>
   )
 };
