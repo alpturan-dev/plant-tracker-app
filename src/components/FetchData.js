@@ -226,58 +226,67 @@ function FetchData() {
   }
 
   return (
-    <div className='flex flex-col items-center content-center justify-center my-5'>
-      <a className="text-orange-900 text-2xl font-bold underline my-4" href="#section">Bitki Durumu</a>
-      {IsTemperatureIdeal(4, temperature)}
-      <VictoryChart
-        domainPadding={20}
-        theme={VictoryTheme.grayscale}
-        animate={{ duration: 2000 }}
-      >
-        <VictoryBar
-          style={{ data: { fill: "#F87315" } }}
-          data={temperature}
-          x="date"
-          y="temperature"
-        />
-      </VictoryChart>
-      <h3 className='text-lg text-orange-500 mb-20'>Sıcaklık</h3>
+    <div>
+      <div className='flex lg:flex-row flex-col items-center content-center justify-center my-5'>
+        <a className="text-orange-900 text-2xl font-bold underline my-4" href="#section">Bitki Durumu</a>
+        <div className='lg:w-1/3  lg:mx-4'>
+          {IsTemperatureIdeal(4, temperature)}
+          <VictoryChart
+            domainPadding={20}
+            theme={VictoryTheme.grayscale}
+            animate={{ duration: 2000 }}
+          >
+            <VictoryBar
+              style={{ data: { fill: "#F87315" } }}
+              data={temperature}
+              x="date"
+              y="temperature"
+            />
+          </VictoryChart>
+          <h3 className='text-lg text-orange-500 lg:mb-0 mb-20'>Sıcaklık</h3>
+        </div>
+        <div className='lg:w-1/3 lg:mx-4'>
+          {IsHumidityIdeal(4, humidity)}
+          <VictoryChart
+            domainPadding={20}
+            theme={VictoryTheme.grayscale}
+            animate={{ duration: 2000 }}
+          >
+            <VictoryBar
+              style={{ data: { fill: "#5FA5F9" } }}
+              data={humidity}
+              x="date"
+              y="humidity"
+            />
+          </VictoryChart>
+          <h3 className='text-lg text-blue-400 lg:mb-0 mb-20'>Nem</h3>
+        </div>
+        <div className='lg:w-1/3 lg:mx-4'>
 
-      {IsHumidityIdeal(4, humidity)}
-      <VictoryChart
-        domainPadding={20}
-        theme={VictoryTheme.grayscale}
-        animate={{ duration: 2000 }}
-      >
-        <VictoryBar
-          style={{ data: { fill: "#5FA5F9" } }}
-          data={humidity}
-          x="date"
-          y="humidity"
-        />
-      </VictoryChart>
-      <h3 className='text-lg text-blue-400 mb-20'>Nem</h3>
-
-      {IsLuxIdeal(4, lux)}
-      <VictoryChart
-        domainPadding={20}
-        theme={VictoryTheme.grayscale}
-        animate={{ duration: 2000 }}
-      >
-        <VictoryBar
-          style={{ data: { fill: "#EAB305" } }}
-          data={lux}
-          x="date"
-          y="lux"
-        />
-      </VictoryChart>
-      <h3 className='text-lg text-yellow-500'>Işık</h3>
-
-      <a className="text-orange-900 text-2xl font-bold underline my-5" href="#section">Günlük Bitki Durumu</a>
-      <div className='my-4'>{IsTemperatureIdeal(1920, gunlukTemperature)}</div>
-      <div className='my-4'>{IsHumidityIdeal(1920, gunlukHumidity)}</div>
-      <div className='my-4'>{IsLuxIdeal(1920, gunlukLux)}</div>
+          {IsLuxIdeal(4, lux)}
+          <VictoryChart
+            domainPadding={20}
+            theme={VictoryTheme.grayscale}
+            animate={{ duration: 2000 }}
+          >
+            <VictoryBar
+              style={{ data: { fill: "#EAB305" } }}
+              data={lux}
+              x="date"
+              y="lux"
+            />
+          </VictoryChart>
+          <h3 className='text-lg text-yellow-500'>Işık</h3>
+        </div>
+      </div>
+      <div>
+        <a className="text-orange-900 text-2xl font-bold underline my-5" href="#section">Günlük Bitki Durumu</a>
+        <div className='lg:w-1/2 mx-auto my-4'>{IsTemperatureIdeal(1920, gunlukTemperature)}</div>
+        <div className='lg:w-1/2 mx-auto my-4'>{IsHumidityIdeal(1920, gunlukHumidity)}</div>
+        <div className='lg:w-1/2 mx-auto my-4'>{IsLuxIdeal(1920, gunlukLux)}</div>
+      </div>
     </div>
+
   )
 };
 

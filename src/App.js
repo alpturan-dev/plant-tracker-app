@@ -2,8 +2,8 @@ import FetchData from "./components/FetchData";
 import plant from "./assets/plant.png"
 function App() {
   return (
-    <div className="h-auto flex items-center justify-center flex-col bg-gradient-to-b from-orangebg to-orange-100 ">
-      <div className="h-screen mt-7 w-3/5 flex flex-col items-center justify-center">
+    <div className="h-auto flex items-center justify-center lg:flex-row flex-col bg-gradient-to-b from-orangebg to-orange-100 ">
+      <div className="h-screen mt-7 lg:w-1/3 w-3/5 flex flex-col items-center justify-center">
         <img src={plant} className="rounded-sm aspect-square" alt="plant" />
         <h1 className="my-4 text-orange-700 text-4xl text-center">
           İHTİYACINIZ OLAN <br></br>
